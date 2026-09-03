@@ -6,3 +6,9 @@ clear:
 
 deps:
 	go mod tidy
+
+run-code:
+	go run ./src
+
+run-bin:
+	./bin/main
