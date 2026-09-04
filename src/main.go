@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"learning-go/src/kafka"
 	"learning-go/src/number_sequence"
 )
 
 func main() {
-	numberSequenceSample()
+	kafkaSample()
 }
 
 func numberSequenceSample() {
@@ -43,4 +44,9 @@ func numberSequenceSample() {
 	init = []int{4, 2, 3}
 	testSequence := number_sequence.Create(init, -3, 1, -2, 1)
 	printSequence("Sequence for test", init, testSequence)
+}
+
+func kafkaSample() {
+	go kafka.RunConsumer()
+	kafka.RunProducer([]int{1}, number_sequence.Create([]int{1}, 0, 1, -1), 20)
 }

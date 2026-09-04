@@ -1,8 +1,8 @@
 package number_sequence
 
-/* With numbers (n_0, n_1, n_2, ...) as init, and (x_0, x_1, x_2, ...) as multipliers
+/* With numbers (n[0], n[1], n[2], ...) as init, and (x[0], x[1], x[2], ...) as multipliers
  * Implement number sequences of the form:
- * n_0, n_1, n_2, ..., n_i = x_0 + x_1*n_(i-1) + x_2*n_(i-2)
+ * n[0], n[1], n[2], ..., n[i] = x[0] + x[1]*n[i-1] + x[2]*n[i-2] + ...
  */
 
 type NumberSequence struct {
