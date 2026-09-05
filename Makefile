@@ -12,3 +12,6 @@ run-code:
 
 run-bin:
 	./bin/main
+
+test:
+	go test ./src/number_sequence
