@@ -54,7 +54,7 @@ func (sequence *NumberSequence) calcTailIndex(index int) (tailIndex int) {
 		return
 	}
 
-	tailIndex = reverse(adjust(index))
+	tailIndex = adjust(reverse(index))
 	return
 }
 
