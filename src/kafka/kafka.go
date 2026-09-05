@@ -28,20 +28,13 @@ func produceRecord(client *kgo.Client, wg *sync.WaitGroup, number int) {
 	})
 }
 
-func produceInit(client *kgo.Client, wg *sync.WaitGroup, init []int) {
-	for _, number := range init {
-		produceRecord(client, wg, number)
-	}
-}
-
-func produceSequence(client *kgo.Client, wg *sync.WaitGroup, init []int, sequence *number_sequence.NumberSequence, numMsg int) {
-	produceInit(client, wg, init)
-	for range numMsg - len(init) {
+func produceSequence(client *kgo.Client, wg *sync.WaitGroup, sequence *number_sequence.NumberSequence, numMsg int) {
+	for range numMsg {
 		produceRecord(client, wg, sequence.Next())
 	}
 }
 
-func RunProducer(init []int, sequence *number_sequence.NumberSequence, numMsg int) {
+func RunProducer(sequence *number_sequence.NumberSequence, numMsg int) {
 	client, err := kgo.NewClient(kgo.SeedBrokers(hosts...))
 
 	if err != nil {
@@ -53,7 +46,7 @@ func RunProducer(init []int, sequence *number_sequence.NumberSequence, numMsg in
 	var wg sync.WaitGroup
 	wg.Add(numMsg)
 
-	produceSequence(client, &wg, init, sequence, numMsg)
+	produceSequence(client, &wg, sequence, numMsg)
 	wg.Wait()
 
 	// Wait a second only for consumer consumes all messages

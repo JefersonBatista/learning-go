@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	kafkaSample()
+	numberSequenceSample()
 }
 
 func numberSequenceSample() {
@@ -18,35 +18,25 @@ func numberSequenceSample() {
 		fmt.Printf("%*d ", digits, number)
 	}
 
-	printInit := func(init []int) {
-		for _, number := range init {
-			printNumber(number)
-		}
-	}
-
-	printSequence := func(title string, init []int, sequence *number_sequence.NumberSequence) {
+	printSequence := func(title string, sequence *number_sequence.NumberSequence) {
 		fmt.Printf("%s:\n", title)
-		printInit(init)
-		for range size - len(init) {
+		for range size {
 			printNumber(sequence.Next())
 		}
 		fmt.Println()
 	}
 
-	init := []int{1}
-	triangularSequence := number_sequence.Create(init, 1, 2, -1)
-	printSequence("Triangular numbers", init, triangularSequence)
+	triangularSequence := number_sequence.Create([]int{1}, 1, 2, -1)
+	printSequence("Triangular numbers", triangularSequence)
 
-	init = []int{1}
-	fibonacciSequence := number_sequence.Create(init, 0, 1, 1)
-	printSequence("Fibonacci numbers", init, fibonacciSequence)
+	fibonacciSequence := number_sequence.Create([]int{1}, 0, 1, 1)
+	printSequence("Fibonacci numbers", fibonacciSequence)
 
-	init = []int{4, 2, 3}
-	testSequence := number_sequence.Create(init, -3, 1, -2, 1)
-	printSequence("Sequence for test", init, testSequence)
+	testSequence := number_sequence.Create([]int{4, 2, 3}, -3, 1, -2, 1)
+	printSequence("Sequence for test", testSequence)
 }
 
 func kafkaSample() {
 	go kafka.RunConsumer()
-	kafka.RunProducer([]int{1}, number_sequence.Create([]int{1}, 0, 1, -1), 20)
+	kafka.RunProducer(number_sequence.Create([]int{1}, 0, 1, -1), 20)
 }

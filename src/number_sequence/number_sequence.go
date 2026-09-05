@@ -6,26 +6,27 @@ package number_sequence
  */
 
 type NumberSequence struct {
+	init       []int
 	tailMult   []int
 	unitMult   int
 	tail       []int
-	readOffset uint
+	readOffset int
+	nextIndex  int
 }
 
-func Create(init []int, multipliers ...int) (newSequence *NumberSequence) {
-	initSize := len(init)
-	tailSize := len(multipliers) - 1
-
+func Create(init []int, unitMult int, tailMult ...int) (newSequence *NumberSequence) {
 	newSequence = &NumberSequence{
-		tailMult:   multipliers[1:],
-		unitMult:   multipliers[0],
-		tail:       make([]int, tailSize),
+		init:       init,
+		tailMult:   tailMult,
+		unitMult:   unitMult,
+		tail:       make([]int, len(tailMult)),
 		readOffset: 0,
+		nextIndex:  0,
 	}
 
-	initSteps := min(initSize, tailSize)
-	initIndex := max(initSize-tailSize, 0)
-	tailIndex := tailSize - initSteps
+	initSteps := min(len(init), len(tailMult))
+	initIndex := max(len(init)-len(tailMult), 0)
+	tailIndex := len(tailMult) - initSteps
 
 	for range initSteps {
 		newSequence.tail[tailIndex] = init[initIndex]
@@ -42,7 +43,7 @@ func (sequence *NumberSequence) calcTailIndex(index int) (tailIndex int) {
 
 	// To not have to move last numbers to the left, I use an offset read strategy
 	adjust := func(index int) (adjustedIndex int) {
-		adjustedIndex = (index + int(sequence.readOffset)) % tailSize
+		adjustedIndex = (index + sequence.readOffset) % tailSize
 		return
 	}
 
@@ -59,6 +60,15 @@ func (sequence *NumberSequence) calcTailIndex(index int) (tailIndex int) {
 }
 
 func (sequence *NumberSequence) Next() (number int) {
+	defer func() {
+		sequence.nextIndex++
+	}()
+
+	if sequence.nextIndex < len(sequence.init) {
+		number = sequence.init[sequence.nextIndex]
+		return
+	}
+
 	number = sequence.unitMult
 	for index, mult := range sequence.tailMult {
 		tailIndex := sequence.calcTailIndex(index)
@@ -66,7 +76,7 @@ func (sequence *NumberSequence) Next() (number int) {
 	}
 
 	sequence.tail[sequence.readOffset] = number
-	sequence.readOffset = (sequence.readOffset + 1) % uint(len(sequence.tail))
+	sequence.readOffset = (sequence.readOffset + 1) % len(sequence.tail)
 
 	return
 }
