@@ -3,7 +3,6 @@ package kafka
 import (
 	"context"
 	"fmt"
-	"learning-go/src/number_sequence"
 	"sync"
 	"time"
 
@@ -15,11 +14,11 @@ var hosts = []string{"localhost:9092"}
 
 const topic = "numeric-topic"
 
-func produceRecord(client *kgo.Client, wg *sync.WaitGroup, number int) {
+func produceRecord(client *kgo.Client, wg *sync.WaitGroup, value []byte) {
 	// Wait a half second for each number
 	time.Sleep(500 * time.Millisecond)
 
-	record := &kgo.Record{Topic: topic, Value: fmt.Append(nil, number)}
+	record := &kgo.Record{Topic: topic, Value: value}
 	client.Produce(ctx, record, func(_ *kgo.Record, err error) {
 		defer wg.Done()
 		if err != nil {
@@ -28,13 +27,7 @@ func produceRecord(client *kgo.Client, wg *sync.WaitGroup, number int) {
 	})
 }
 
-func produceSequence(client *kgo.Client, wg *sync.WaitGroup, sequence *number_sequence.NumberSequence, numMsg int) {
-	for range numMsg {
-		produceRecord(client, wg, sequence.Next())
-	}
-}
-
-func RunProducer(sequence *number_sequence.NumberSequence, numMsg int) {
+func RunProducer(nextMsg func() []byte, numMsg int) {
 	client, err := kgo.NewClient(kgo.SeedBrokers(hosts...))
 
 	if err != nil {
@@ -46,7 +39,9 @@ func RunProducer(sequence *number_sequence.NumberSequence, numMsg int) {
 	var wg sync.WaitGroup
 	wg.Add(numMsg)
 
-	produceSequence(client, &wg, sequence, numMsg)
+	for range numMsg {
+		produceRecord(client, &wg, nextMsg())
+	}
 	wg.Wait()
 
 	// Wait a second only for consumer consumes all messages

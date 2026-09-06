@@ -51,5 +51,6 @@ func numberSequenceSample() {
 
 func kafkaSample() {
 	go kafka.RunConsumer()
-	kafka.RunProducer(number_sequence.Create([]int{1}, 0, 1, -1), 20)
+	sequence := number_sequence.Create([]int{1}, 0, 1, -1)
+	kafka.RunProducer(sequence.NextAsBytes, 20)
 }

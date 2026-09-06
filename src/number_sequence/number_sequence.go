@@ -1,5 +1,7 @@
 package number_sequence
 
+import "fmt"
+
 /* With numbers (n[0], n[1], n[2], ...) as init, and (x[0], x[1], x[2], ...) as multipliers
  * Implement number sequences of the form:
  * n[0], n[1], n[2], ..., n[i] = x[0] + x[1]*n[i-1] + x[2]*n[i-2] + ...
@@ -84,6 +86,10 @@ func (sequence *NumberSequence) Next() (number int) {
 	sequence.readOffset = (sequence.readOffset + 1) % len(sequence.tail)
 
 	return
+}
+
+func (sequence *NumberSequence) NextAsBytes() []byte {
+	return fmt.Append(nil, sequence.Next())
 }
 
 func (sequence *NumberSequence) GetInitCopy() (initCopy []int) {
