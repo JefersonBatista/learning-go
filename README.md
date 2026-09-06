@@ -5,7 +5,7 @@ The idea of this repository is just to practice with the Go language and explore
 ## Number Sequence
 
 Given an initial sequence ($n_0, n_1, n_2, ...$) and multipliers ($x_0, x_1, x_2, ...$), it is a number sequence of the form: \
-$n_0, n_1, n_2, ..., n_i = x_0 + x_1*n_{i-1} + x_2*n_{i-2} + ...$
+$n_0, n_1, n_2, ..., n_i = x_0 + x_1 * n_{i-1} + x_2 * n_{i-2} + ...$
 
 Usage: `make run-code` (or `run-bin` to use compiled binary) `ARGS=number_sequence`.
 
