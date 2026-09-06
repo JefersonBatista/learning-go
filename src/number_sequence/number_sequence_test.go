@@ -46,7 +46,7 @@ func TestGetTailMult(t *testing.T) {
 }
 
 func TestGetNextIndex(t *testing.T) {
-	testSeq := Create([]int{}, 0, 0)
+	testSeq := Create([]int{}, 0)
 	for range 4 {
 		testSeq.Next()
 	}
@@ -55,7 +55,7 @@ func TestGetNextIndex(t *testing.T) {
 		t.Error("Wrong next index (outside init).")
 	}
 
-	testSeq = Create([]int{1, 1, 1, 1, 1, 1}, 0, 0)
+	testSeq = Create([]int{1, 1, 1, 1, 1, 1}, 0)
 	for range 4 {
 		testSeq.Next()
 	}

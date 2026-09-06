@@ -24,6 +24,11 @@ func Create(init []int, unitMult int, tailMult ...int) (newSequence *NumberSeque
 		nextIndex:  0,
 	}
 
+	if len(tailMult) == 0 {
+		newSequence.tailMult = []int{0}
+		newSequence.tail = []int{0}
+	}
+
 	initSteps := min(len(init), len(tailMult))
 	initIndex := max(len(init)-len(tailMult), 0)
 	tailIndex := len(tailMult) - initSteps
