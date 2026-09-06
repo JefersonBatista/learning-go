@@ -4,10 +4,23 @@ import (
 	"fmt"
 	"learning-go/src/kafka"
 	"learning-go/src/number_sequence"
+	"os"
 )
 
 func main() {
-	numberSequenceSample()
+	if len(os.Args) < 2 {
+		fmt.Println("Choose what you want to run between 'number_sequence' and 'kafka'.")
+		return
+	}
+
+	switch os.Args[1] {
+	case "number_sequence":
+		numberSequenceSample()
+	case "kafka":
+		kafkaSample()
+	default:
+		fmt.Println("Invalid argument. Use 'number_sequence' or 'kafka'.")
+	}
 }
 
 func numberSequenceSample() {
