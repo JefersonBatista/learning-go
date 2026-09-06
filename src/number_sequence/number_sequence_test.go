@@ -14,3 +14,53 @@ func TestNext(t *testing.T) {
 		}
 	}
 }
+
+func TestGetInit(t *testing.T) {
+	testSeq := Create([]int{1, 2}, 1, 1)
+	gotInit := testSeq.GetInitCopy()
+
+	if len(testSeq.GetInitCopy()) != 2 {
+		t.Error("Internal initial size of sequence being modified.")
+		return
+	}
+
+	gotInit[1] = 1
+	if testSeq.GetInitCopy()[1] != 2 {
+		t.Error("Internal initial numbers of sequence being modified.")
+	}
+}
+
+func TestGetTailMult(t *testing.T) {
+	testSeq := Create([]int{1}, 0, 1, 2)
+	gotTailMult := testSeq.GetTailMultCopy()
+
+	if len(testSeq.GetTailMultCopy()) != 2 {
+		t.Error("Internal size of tail multipliers of sequence being modified.")
+		return
+	}
+
+	gotTailMult[1] = 1
+	if testSeq.GetTailMultCopy()[1] != 2 {
+		t.Error("Internal tail multipliers of sequence being modified.")
+	}
+}
+
+func TestGetNextIndex(t *testing.T) {
+	testSeq := Create([]int{}, 0, 0)
+	for range 4 {
+		testSeq.Next()
+	}
+
+	if testSeq.GetNextIndex() != 4 {
+		t.Error("Wrong next index (outside init).")
+	}
+
+	testSeq = Create([]int{1, 1, 1, 1, 1, 1}, 0, 0)
+	for range 4 {
+		testSeq.Next()
+	}
+
+	if testSeq.GetNextIndex() != 4 {
+		t.Error("Wrong next index (inside init).")
+	}
+}

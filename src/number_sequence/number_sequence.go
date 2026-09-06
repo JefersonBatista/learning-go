@@ -7,8 +7,8 @@ package number_sequence
 
 type NumberSequence struct {
 	init       []int
-	tailMult   []int
 	unitMult   int
+	tailMult   []int
 	tail       []int
 	readOffset int
 	nextIndex  int
@@ -79,4 +79,24 @@ func (sequence *NumberSequence) Next() (number int) {
 	sequence.readOffset = (sequence.readOffset + 1) % len(sequence.tail)
 
 	return
+}
+
+func (sequence *NumberSequence) GetInitCopy() (initCopy []int) {
+	initCopy = make([]int, len(sequence.init))
+	copy(initCopy, sequence.init)
+	return
+}
+
+func (sequence *NumberSequence) GetUnitMult() int {
+	return sequence.unitMult
+}
+
+func (sequence *NumberSequence) GetTailMultCopy() (tailMultCopy []int) {
+	tailMultCopy = make([]int, len(sequence.tailMult))
+	copy(tailMultCopy, sequence.tailMult)
+	return
+}
+
+func (sequence *NumberSequence) GetNextIndex() int {
+	return sequence.nextIndex
 }
