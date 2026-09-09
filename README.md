@@ -15,3 +15,7 @@ Code using Apache Kafka needs a setup (`make kafka-up`, optionally passing a `KA
 To unmount kakfa setup: `make kafka-down`.
 
 Usage: `make run-code` (or `run-bin` to use compiled binary) `ARGS=kafka`.
+
+## Quicksort
+
+Usage: `make run-code` (or `run-bin` to use compiled binary) `ARGS=quicksort`.
