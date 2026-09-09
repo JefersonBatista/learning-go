@@ -15,11 +15,15 @@ func main() {
 	options["kafka"] = kafkaSample
 	options["quicksort"] = quicksortSample
 
-	if len(os.Args) < 2 {
-		fmt.Println("Choose what you want to run between. Options:")
+	listOptions := func() {
 		for option := range options {
 			fmt.Printf("- %s\n", option)
 		}
+	}
+
+	if len(os.Args) < 2 {
+		fmt.Println("Choose what you want to run between. Options:")
+		listOptions()
 		return
 	}
 
@@ -28,9 +32,7 @@ func main() {
 		option()
 	} else {
 		fmt.Println("Invalid argument. Use one of:")
-		for option := range options {
-			fmt.Printf("- %s\n", option)
-		}
+		listOptions()
 	}
 }
 
