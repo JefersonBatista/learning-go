@@ -10,20 +10,27 @@ import (
 )
 
 func main() {
+	options := make(map[string]func())
+	options["number_sequence"] = numberSequenceSample
+	options["kafka"] = kafkaSample
+	options["quicksort"] = quicksortSample
+
 	if len(os.Args) < 2 {
-		fmt.Println("Choose what you want to run between 'number_sequence', 'kafka' and 'quicksort'.")
+		fmt.Println("Choose what you want to run between. Options:")
+		for option := range options {
+			fmt.Printf("- %s\n", option)
+		}
 		return
 	}
 
-	switch os.Args[1] {
-	case "number_sequence":
-		numberSequenceSample()
-	case "kafka":
-		kafkaSample()
-	case "quicksort":
-		quicksortSample()
-	default:
-		fmt.Println("Invalid argument. Use 'number_sequence', 'kafka' or 'quicksort'.")
+	option := options[os.Args[1]]
+	if option != nil {
+		option()
+	} else {
+		fmt.Println("Invalid argument. Use one of:")
+		for option := range options {
+			fmt.Printf("- %s\n", option)
+		}
 	}
 }
 
