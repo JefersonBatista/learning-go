@@ -14,7 +14,9 @@ run-bin:
 	./bin/main $(ARGS)
 
 test:
-	go test ./src/number_sequence
+	go test \
+		./src/number_sequence \
+		./src/quicksort
 
 KAFKA_IMAGE ?= apache/kafka:latest
 

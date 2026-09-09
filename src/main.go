@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"learning-go/src/kafka"
 	"learning-go/src/number_sequence"
+	"learning-go/src/quicksort"
+	"math/rand/v2"
 	"os"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Choose what you want to run between 'number_sequence' and 'kafka'.")
+		fmt.Println("Choose what you want to run between 'number_sequence', 'kafka' and 'quicksort'.")
 		return
 	}
 
@@ -18,8 +20,10 @@ func main() {
 		numberSequenceSample()
 	case "kafka":
 		kafkaSample()
+	case "quicksort":
+		quicksortSample()
 	default:
-		fmt.Println("Invalid argument. Use 'number_sequence' or 'kafka'.")
+		fmt.Println("Invalid argument. Use 'number_sequence', 'kafka' or 'quicksort'.")
 	}
 }
 
@@ -53,4 +57,27 @@ func kafkaSample() {
 	go kafka.RunConsumer()
 	sequence := number_sequence.Create([]int{1}, 0, 1, -1)
 	kafka.RunProducer(sequence.NextAsBytes, 20)
+}
+
+func quicksortSample() {
+	size := 20
+	slice := make([]int, size)
+
+	for i := range size {
+		slice[i] = rand.IntN(size)
+	}
+
+	fmt.Print("Original slice: ")
+	for _, n := range slice {
+		fmt.Printf("%d ", n)
+	}
+	fmt.Println()
+
+	quicksort.Quicksort(slice)
+
+	fmt.Print("Ordered slice:  ")
+	for _, n := range slice {
+		fmt.Printf("%d ", n)
+	}
+	fmt.Println()
 }
