@@ -43,10 +43,9 @@ func partition(slice []int) (pivotIndex int) {
 		}
 	}
 
-	swapCount := 0
 	i, j := 0, pivotIndex+1
 
-	for swapCount < numSwaps {
+	for range numSwaps {
 		for slice[i] < pivot {
 			i++
 		}
@@ -55,7 +54,6 @@ func partition(slice []int) (pivotIndex int) {
 		}
 
 		swap(slice, i, j)
-		swapCount++
 		i++
 		j++
 	}
