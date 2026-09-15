@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	"learning-go/src/int_sequence"
+	"learning-go/src/int_sequence/tail_mult_sequence"
 	"learning-go/src/kafka"
-	"learning-go/src/number_sequence"
 	"learning-go/src/quicksort"
 	"math/rand/v2"
 	"os"
@@ -11,7 +12,7 @@ import (
 
 func main() {
 	options := make(map[string]func())
-	options["number_sequence"] = numberSequenceSample
+	options["sequence"] = tailMultSequenceSample
 	options["kafka"] = kafkaSample
 	options["quicksort"] = quicksortSample
 
@@ -36,7 +37,7 @@ func main() {
 	}
 }
 
-func numberSequenceSample() {
+func tailMultSequenceSample() {
 	size := 20
 	digits := 5
 
@@ -44,7 +45,7 @@ func numberSequenceSample() {
 		fmt.Printf("%*d ", digits, number)
 	}
 
-	printSequence := func(title string, sequence *number_sequence.NumberSequence) {
+	printSequence := func(title string, sequence *tail_mult_sequence.TailMultSequence) {
 		fmt.Printf("%s:\n", title)
 		for range size {
 			printNumber(sequence.Next())
@@ -52,20 +53,30 @@ func numberSequenceSample() {
 		fmt.Println()
 	}
 
-	triangularSequence := number_sequence.Create([]int{1}, 1, 2, -1)
+	triangularSequence := tail_mult_sequence.Create([]int{1}, 1, 2, -1)
 	printSequence("Triangular numbers", triangularSequence)
 
-	fibonacciSequence := number_sequence.Create([]int{1}, 0, 1, 1)
+	fibonacciSequence := tail_mult_sequence.Create([]int{1}, 0, 1, 1)
 	printSequence("Fibonacci numbers", fibonacciSequence)
 
-	testSequence := number_sequence.Create([]int{4, 2, 3}, -3, 1, -2, 1)
+	testSequence := tail_mult_sequence.Create([]int{4, 2, 3}, -3, 1, -2, 1)
 	printSequence("Sequence for test", testSequence)
 }
 
 func kafkaSample() {
 	go kafka.RunConsumer()
-	sequence := number_sequence.Create([]int{1}, 0, 1, -1)
-	kafka.RunProducer(sequence.NextAsBytes, 20)
+	sequence := tail_mult_sequence.Create([]int{1}, 0, 1, -1)
+	condition := func(n int) bool {
+		return n >= 0
+	}
+	nextWithFilter := int_sequence.NextWithFilter(sequence, condition)
+	transformer := func(n int) int {
+		return 2 * n
+	}
+	nextAsBytes := func() []byte {
+		return int_sequence.ToBytes(transformer(nextWithFilter()))
+	}
+	kafka.RunProducer(nextAsBytes, 20)
 }
 
 func quicksortSample() {

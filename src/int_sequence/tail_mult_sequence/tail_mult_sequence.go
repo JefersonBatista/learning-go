@@ -1,13 +1,11 @@
-package number_sequence
-
-import "fmt"
+package tail_mult_sequence
 
 /* With numbers (n[0], n[1], n[2], ...) as init, and (x[0], x[1], x[2], ...) as multipliers
  * Implement number sequences of the form:
  * n[0], n[1], n[2], ..., n[i] = x[0] + x[1]*n[i-1] + x[2]*n[i-2] + ...
  */
 
-type NumberSequence struct {
+type TailMultSequence struct {
 	init       []int
 	unitMult   int
 	tailMult   []int
@@ -16,8 +14,8 @@ type NumberSequence struct {
 	nextIndex  int
 }
 
-func Create(init []int, unitMult int, tailMult ...int) (newSequence *NumberSequence) {
-	newSequence = &NumberSequence{
+func Create(init []int, unitMult int, tailMult ...int) (newSequence *TailMultSequence) {
+	newSequence = &TailMultSequence{
 		init:       init,
 		tailMult:   tailMult,
 		unitMult:   unitMult,
@@ -45,7 +43,7 @@ func Create(init []int, unitMult int, tailMult ...int) (newSequence *NumberSeque
 }
 
 // Read index for the way last numbers (the tail) are stored
-func (sequence *NumberSequence) calcTailIndex(index int) (tailIndex int) {
+func (sequence *TailMultSequence) calcTailIndex(index int) (tailIndex int) {
 	tailSize := len(sequence.tail)
 
 	// To not have to move last numbers to the left, I use an offset read strategy
@@ -66,7 +64,7 @@ func (sequence *NumberSequence) calcTailIndex(index int) (tailIndex int) {
 	return
 }
 
-func (sequence *NumberSequence) Next() (number int) {
+func (sequence *TailMultSequence) Next() (number int) {
 	defer func() {
 		sequence.nextIndex++
 	}()
@@ -88,26 +86,22 @@ func (sequence *NumberSequence) Next() (number int) {
 	return
 }
 
-func (sequence *NumberSequence) NextAsBytes() []byte {
-	return fmt.Append(nil, sequence.Next())
-}
-
-func (sequence *NumberSequence) GetInitCopy() (initCopy []int) {
+func (sequence *TailMultSequence) GetInitCopy() (initCopy []int) {
 	initCopy = make([]int, len(sequence.init))
 	copy(initCopy, sequence.init)
 	return
 }
 
-func (sequence *NumberSequence) GetUnitMult() int {
+func (sequence *TailMultSequence) GetUnitMult() int {
 	return sequence.unitMult
 }
 
-func (sequence *NumberSequence) GetTailMultCopy() (tailMultCopy []int) {
+func (sequence *TailMultSequence) GetTailMultCopy() (tailMultCopy []int) {
 	tailMultCopy = make([]int, len(sequence.tailMult))
 	copy(tailMultCopy, sequence.tailMult)
 	return
 }
 
-func (sequence *NumberSequence) GetNextIndex() int {
+func (sequence *TailMultSequence) GetNextIndex() int {
 	return sequence.nextIndex
 }

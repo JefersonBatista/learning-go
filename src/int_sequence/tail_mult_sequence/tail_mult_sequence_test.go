@@ -1,4 +1,4 @@
-package number_sequence
+package tail_mult_sequence
 
 import (
 	"testing"
