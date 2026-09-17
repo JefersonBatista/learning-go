@@ -3,6 +3,7 @@ package kafka
 import (
 	"context"
 	"fmt"
+	"learning-go/src/message_sequence"
 	"sync"
 	"time"
 
@@ -27,7 +28,7 @@ func produceRecord(client *kgo.Client, wg *sync.WaitGroup, value []byte) {
 	})
 }
 
-func RunProducer(nextMsg func() []byte, numMsg int) {
+func RunProducer(sequence message_sequence.Sequence, numMsg int) {
 	client, err := kgo.NewClient(kgo.SeedBrokers(hosts...))
 
 	if err != nil {
@@ -40,7 +41,7 @@ func RunProducer(nextMsg func() []byte, numMsg int) {
 	wg.Add(numMsg)
 
 	for range numMsg {
-		produceRecord(client, &wg, nextMsg())
+		produceRecord(client, &wg, sequence.Next().Bytes())
 	}
 	wg.Wait()
 

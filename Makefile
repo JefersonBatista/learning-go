@@ -15,7 +15,7 @@ run-bin:
 
 test:
 	go test \
-		./src/int_sequence/tail_mult_sequence \
+		./src/message_sequence/number_sequence \
 		./src/quicksort
 
 KAFKA_IMAGE ?= apache/kafka:latest
